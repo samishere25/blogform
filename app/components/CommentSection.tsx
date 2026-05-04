@@ -1,21 +1,49 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 
 interface Comment {
   id: number;
   name: string;
   text: string;
   date: string;
+  timestamp: number;
+}
+
+const STORAGE_KEY = 'blog_comments';
+
+const defaultComments: Comment[] = [
+  { id: 1, name: 'Sarah Mitchell', text: 'This is one of the best explanations of transformer architecture I\'ve read. The visual analogies really helped me understand attention mechanisms.', date: '2 days ago', timestamp: Date.now() - 2 * 24 * 60 * 60 * 1000 },
+  { id: 2, name: 'David Chen', text: 'The section on context windows was particularly insightful. It explains why chatbots sometimes "forget" earlier parts of conversation.', date: '1 day ago', timestamp: Date.now() - 24 * 60 * 60 * 1000 },
+];
+
+function getStoredComments(): Comment[] {
+  try {
+    const stored = localStorage.getItem(STORAGE_KEY);
+    if (stored) {
+      const parsed = JSON.parse(stored);
+      if (Array.isArray(parsed) && parsed.length > 0) return parsed;
+    }
+  } catch {}
+  return defaultComments;
 }
 
 export default function CommentSection() {
-  const [comments, setComments] = useState<Comment[]>([
-    { id: 1, name: 'Sarah Mitchell', text: 'This is one of the best explanations of transformer architecture I\'ve read. The visual analogies really helped me understand attention mechanisms.', date: '2 days ago' },
-    { id: 2, name: 'David Chen', text: 'The section on context windows was particularly insightful. It explains why chatbots sometimes "forget" earlier parts of conversation.', date: '1 day ago' },
-  ]);
+  const [comments, setComments] = useState<Comment[]>([]);
   const [newComment, setNewComment] = useState('');
   const [name, setName] = useState('');
+  const [initialized, setInitialized] = useState(false);
+
+  useEffect(() => {
+    setComments(getStoredComments());
+    setInitialized(true);
+  }, []);
+
+  useEffect(() => {
+    if (initialized) {
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(comments));
+    }
+  }, [comments, initialized]);
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -26,6 +54,7 @@ export default function CommentSection() {
       name: name.trim(),
       text: newComment.trim(),
       date: 'Just now',
+      timestamp: Date.now(),
     };
     
     setComments([comment, ...comments]);

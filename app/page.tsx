@@ -7,6 +7,7 @@ import TableOfContents from './components/TableOfContents';
 import LikeButton from './components/LikeButton';
 import ShareButtons from './components/ShareButtons';
 import CommentSection from './components/CommentSection';
+import AuthorSection from './components/AuthorSection';
 
 const tableOfContents = [
   { id: 'introduction', title: 'Introduction' },
@@ -503,6 +504,10 @@ export default function BlogPage() {
                   url="https://example.com" 
                 />
               </div>
+            </div>
+
+            <div className="mt-16 pt-8 border-t border-gray-200 dark:border-gray-800">
+              <AuthorSection />
             </div>
 
             <div className="mt-16 pt-8 border-t border-gray-200 dark:border-gray-800">
