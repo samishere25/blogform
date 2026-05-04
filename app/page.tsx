@@ -6,6 +6,7 @@ import ReadingProgress from './components/ReadingProgress';
 import TableOfContents from './components/TableOfContents';
 import LikeButton from './components/LikeButton';
 import ShareButtons from './components/ShareButtons';
+import CommentSection from './components/CommentSection';
 import AuthorSection from './components/AuthorSection';
 
 const tableOfContents = [
@@ -508,6 +509,10 @@ export default function BlogPage() {
 
             <div className="mt-16 pt-8 border-t border-gray-200 dark:border-gray-800">
               <AuthorSection />
+            </div>
+
+            <div className="mt-16 pt-8 border-t border-gray-200 dark:border-gray-800">
+              <CommentSection />
             </div>
           </article>
 
